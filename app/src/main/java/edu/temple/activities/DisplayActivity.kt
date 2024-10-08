@@ -10,6 +10,19 @@ import androidx.activity.result.contract.ActivityResultContracts
 class DisplayActivity : AppCompatActivity() {
 
     // TODO Step 1: Launch TextSizeActivity when button clicked to allow selection of text size value
+    val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+
+        it.data?.run {
+
+            lyricsDisplayTextView.textSize = getIntExtra("result", 22).toFloat()
+
+
+
+        }
+
+
+
+    }
 
 
     // TODO Step 3: Use returned value for lyricsDisplayTextView text size
@@ -17,11 +30,6 @@ class DisplayActivity : AppCompatActivity() {
     private lateinit var lyricsDisplayTextView: TextView
     private lateinit var textSizeSelectorButton: Button
 
-    val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        if (it.resultCode > 0) {
-            lyricsDisplayTextView.textSize = it.resultCode.toFloat()
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +38,12 @@ class DisplayActivity : AppCompatActivity() {
         lyricsDisplayTextView = findViewById(R.id.lyricsDisplayTextView)
         textSizeSelectorButton = findViewById<Button?>(R.id.textSizeSelectorButton)
 
-        textSizeSelectorButton.setOnClickListener { launcher.launch(textSizeSelectorButton, ) }
+        textSizeSelectorButton.setOnClickListener {
+
+            launcher.launch(Intent(this, TextSizeActivity::class.java))
+
+
+        }
 
 
 
@@ -47,20 +60,7 @@ class DisplayActivity : AppCompatActivity() {
 
 
         textSizeSelectorButton.setOnClickListener {
-
-
-            val intent = Intent(this@DisplayActivity, TextSizeActivity::class.java)
-            intent.putExtra("key", "lyricsDisplayTextView")
-            startActivity(intent)
-            lyricsDisplayTextView
-
-
-
-
-            setResult(RESULT_OK, Intent().putExtra(RESULT_KEY, lyricsDisplayTextView))
-            finish()
-
-
+            
 
 
         }
